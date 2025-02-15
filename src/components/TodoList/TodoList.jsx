@@ -15,18 +15,22 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 
-const UserInfo = () => {
+const TodoList = () => {
 
     const { tasks } = useSelector((state) => state.todoListReducer );
     const dispatch = useDispatch();
-    const [taskName, setTaskName] = useState('Task name here...');
+    const [taskName, setTaskName] = useState('');
+    const [errorStatus, setErrorStatus] = useState(false);
 
     const handleChange = (e) => {
         setTaskName(e.target.value);
     }
 
     const handleTaskSave = () => {
-        setTaskName('Task name here...')
+        setTaskName('')
+        if(!taskName) {
+            setErrorStatus(true);
+        }
         dispatch(addTask(taskName));
     }
 
@@ -34,6 +38,7 @@ const UserInfo = () => {
         dispatch(completeTask(id));
     }
 
+    console.log('tasks');
     return (
         <div>
             <Box sx={{ display: 'flex', width: '100%' }}>
@@ -42,8 +47,8 @@ const UserInfo = () => {
                     onChange={(e) => handleChange(e)}
                     label="Task Name"
                     id="taskName"
-                    error={!taskName}
-                    helperText={!taskName ? 'Task name is required' : ''}
+                    error={errorStatus}
+                    helperText={errorStatus ? 'Task name is required' : ''}
                     sx={{ marginRight: '1rem' }}
                     value={taskName}
                 />
@@ -90,4 +95,4 @@ const UserInfo = () => {
     );
 }
 
-export default UserInfo;
+export default TodoList;
