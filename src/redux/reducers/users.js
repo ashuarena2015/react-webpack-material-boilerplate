@@ -1,3 +1,6 @@
+import axiosInstance from '../axios';
+import { globalSnackbarMessage } from './global';
+
 // Actions types
 const FETCH_USERS = 'FETCH_USERS';
 
@@ -10,22 +13,26 @@ const initialState = {
 export const fetchUsers = () => async (dispatch) => {
     
     try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/users');
-        const users = await res.json();
+        const res = await axiosInstance.get('/users');
+        console.log({res});
         dispatch({
             type: FETCH_USERS,
             payload: {
-                users
+                users: res?.data
             }
         });
+        dispatch(globalSnackbarMessage({
+            message: 'Successfully fetched the users data', 
+            msgType: 'success'
+        }));
     } catch (e) {
-        throw new Error(e);
+        console.log('error users');
+        dispatch(globalSnackbarMessage({
+            message: 'Something went wrong', 
+            msgType: 'error'
+        }));
+        // throw new Error(e);
     }
-
-    // type: FETCH_USERS,
-    // payload: {
-    //     users
-    // }
 };
 
 // Reducer

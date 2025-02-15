@@ -1,3 +1,4 @@
+import { globalSnackbarMessage } from './global';
 // Action Types
 const ADD_TASK = 'ADD_TASK';
 const DELETE_TASK = 'DELETE_TASK';
@@ -5,15 +6,21 @@ const COMPLETE_TASK = 'COMPLETE_TASK';
 
 // Action Creators
 let id = 1;
-export const addTask = (task) => ({
-    type: ADD_TASK,
-    payload: {
-        id: id++,
-        title: task,
-        status: false,
-        date: new Date().toLocaleString()
-    }
-});
+export const addTask = (task) => (dispatch) => {
+    dispatch({
+        type: ADD_TASK,
+        payload: {
+            id: id++,
+            title: task,
+            status: false,
+            date: new Date().toLocaleString()
+        }
+    });
+    dispatch(globalSnackbarMessage({
+        message: 'A new task added successfully!',
+        msgType: 'success'
+    }))
+};
 
 export const deleteTask = (id) => ({
     type: DELETE_TASK,
