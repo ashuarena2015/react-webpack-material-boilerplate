@@ -10,7 +10,8 @@ export const addTask = (task) => ({
     payload: {
         id: id++,
         title: task,
-        status: false
+        status: false,
+        date: new Date().toLocaleString()
     }
 });
 
